@@ -1,0 +1,12 @@
+<!-- templates/admin/index.html -->
+
+{% extends "admin/index.html" %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <div>
+        <h2>Estadísticas de la Biblioteca</h2>
+        <a href="{{ estadisticas_url }}" class="button">Ver Estadísticas</a>  <!-- Usa la variable aquí -->
+    </div>
+    {{ block.super }}  <!-- Esto renderiza el resto del contenido original -->
+{% endblock %}

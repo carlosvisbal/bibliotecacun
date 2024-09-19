@@ -1,0 +1,77 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+
+<h1>Estadísticas de la Biblioteca</h1>
+
+<!-- Contenedor para gráficos -->
+<canvas id="reservasChart" width="400" height="200"></canvas>
+<canvas id="prestamosChart" width="400" height="200"></canvas>
+
+<!-- Incluye Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Datos de reservas activas
+    const reservasData = {
+        labels: [{% for reserva in reservas_activas %}'{{ reserva.libro__titulo }}',{% endfor %}],
+        datasets: [{
+            label: 'Reservas Activas',
+            data: [{% for reserva in reservas_activas %}{{ reserva.cantidad }},{% endfor %}],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Configuración del gráfico de reservas activas
+    const reservasConfig = {
+        type: 'bar',
+        data: reservasData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Renderiza el gráfico de reservas
+    const reservasChart = new Chart(
+        document.getElementById('reservasChart'),
+        reservasConfig
+    );
+
+    // Datos de libros en préstamo
+    const prestamosData = {
+        labels: [{% for prestamo in libros_en_prestamo %}'{{ prestamo.libro__titulo }}',{% endfor %}],
+        datasets: [{
+            label: 'Libros en Préstamo',
+            data: [{% for prestamo in libros_en_prestamo %}{{ prestamo.cantidad }},{% endfor %}],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Configuración del gráfico de libros en préstamo
+    const prestamosConfig = {
+        type: 'bar',
+        data: prestamosData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Renderiza el gráfico de libros en préstamo
+    const prestamosChart = new Chart(
+        document.getElementById('prestamosChart'),
+        prestamosConfig
+    );
+</script>
+
+{% endblock %}
